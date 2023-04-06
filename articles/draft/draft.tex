@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
+\usepackage{listings}
+
 \author{Daniel Walther Berns}
 \title{Ten algorithms}
 \begin{document}
@@ -11,61 +13,86 @@
     % https://github.com/AssemblyAI-Examples/Machine-Learning-From-Scratch
     % https://www.youtube.com/watch?v=rTEtEy5o3X0
     
-    K nearest neighbours algorithm
     
-    \section{Linear regression}
+    \subsection{Introduction}
+    The k-nearest neighbors algorithm, also known as KNN or k-NN, is a non-parametric, supervised learning classifier, which uses proximity to make classifications or predictions about the grouping of an individual data point. 
+    
+    \begin{enumerate}
+    \item Non-parametric models do not make assumptions about the underlying distribution of the data, which can make them more flexible but also potentially more computationally expensive. 
+    
+    \item Supervised learning means that the algorithm is trained on labeled data, where the correct classifications are already known, and uses this training to make predictions on new, unlabeled data.    
+    
+    \item In KNN, proximity refers to the distance between data points in a feature space, where features are the measurable characteristics of the data points. The k in KNN refers to the number of nearest neighbors that are considered when making a prediction. For example, if k=3, the algorithm would consider the three closest data points to the one being classified, and assign the class label that is most frequent among those three.
+    
+    \item While it is true that KNN can be used for both classification and regression  problems, it is worth mentioning that the algorithm is more commonly used for former working off the assumption that similar points can be found near one another. In regression problems, KNN would predict a numerical value for the target variable, rather than a class label.
+  
+    \item For classification problems, a class label is assigned on the basis of a majority vote, i.e. the label that is most frequently represented around a given data point is used. While this is technically considered “plurality voting”, the term, “majority vote” is more commonly used in literature. The distinction between these terminologies is that “majority voting” technically requires a majority of greater than $50 \%$, which primarily works when there are only two categories. When you have multiple classes, four categories, you don’t necessarily need $50 \%$ of the vote to make a conclusion about a class; you could assign a class label with the greatest vote. 
+    
+    \item Regression problems use a similar concept as classification problem, but in this case, the average of the k nearest neighbors is taken to make a prediction about a classification. The main distinction here is that classification is used for discrete values, whereas regression is used with continuous ones. 
+    
+    \item It's also worth noting that the KNN algorithm is also part of a family of “lazy learning” models, meaning that it only stores a training dataset versus undergoing a training stage. This also means that all the computation occurs when a prediction is being made. Since it heavily relies on memory to store all its training data, it is also referred to as an instance-based or memory-based learning method.
+    
+    \item Evelyn Fix and Joseph Hodges are credited with the initial ideas around the KNN model in this 1951 paper while Thomas Cover expands on their concept in his article “Nearest Neighbor Pattern Classification.” While it’s not as popular as it once was, it is still one of the first algorithms one learns in data science due to its simplicity and accuracy. However, as a dataset grows, KNN becomes increasingly inefficient, compromising overall model performance. It is commonly used for simple recommendation systems, pattern recognition, data mining, financial market predictions, intrusion detection, and more.      
+\end{enumerate}
+    
+    \subsection{KNN Code}
+    
+    \lstinputlisting[language=Python]{./source/knn/knn.py}
+    
+    
+\section{Linear regression}
     % https://twitter.com/AssemblyAI/status/1575153653178155010?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=ltXSoduiVwY
     
     Linear regression
     
-    \section{Logistic regression}
+\section{Logistic regression}
     % https://twitter.com/AssemblyAI/status/1575153654537064448?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=YYEJ_GUguHw
     
     Logistic regression
     
-    \section{Decision trees}
+\section{Decision trees}
     % https://twitter.com/AssemblyAI/status/1575153656135315456?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=NxEHSAfFlK8
     
     Decision trees
     
-    \section{Random forest}
+\section{Random forest}
     % https://twitter.com/AssemblyAI/status/1575153657485692928?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=kFwe2ZZU7yw
     
     Random Forest
     
-    \section{Naive Bayes}
+\section{Naive Bayes}
     % https://twitter.com/AssemblyAI/status/1575153659075301376?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=TLInuAorxqE
     
     Naive Bayes
     
-    \section{PCA}
+\section{PCA}
     % https://twitter.com/AssemblyAI/status/1575153660459458560?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=Rjr62b_h7S4
     
     PCA
     
-    \section{Perceptron}
+\section{Perceptron}
     % https://twitter.com/AssemblyAI/status/1575153663407837184?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=aOEoxyA4uXU
     
     Perceptron
     
-    \section{SVM}
+\section{SVM}
     % https://twitter.com/AssemblyAI/status/1575153666364911617?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=T9UcK-TxQGw
     
-    \section{K means}
+\section{K means}
     % https://twitter.com/AssemblyAI/status/1575153669087334400?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=6UF5Ysk_2gk
     
     Kmeans
     
-    \section{Bibliography}
+\section{Bibliography}
     Write
     % \bibliography{article.bib}
     
