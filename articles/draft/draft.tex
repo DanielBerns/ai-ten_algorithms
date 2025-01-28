@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[10pt,a4paper]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
@@ -8,13 +8,13 @@
 \title{Ten algorithms}
 \begin{document}
 	\maketitle
-	\section{KNN}
+	\chapter{KNN}
     % https://twitter.com/AssemblyAI/status/1575153651890388996?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://github.com/AssemblyAI-Examples/Machine-Learning-From-Scratch
     % https://www.youtube.com/watch?v=rTEtEy5o3X0
     
-    
-    \subsection{Introduction}
+
+    \section{Introduction}
     The k-nearest neighbors algorithm, also known as KNN or k-NN, is a non-parametric, supervised learning classifier, which uses proximity to make classifications or predictions about the grouping of an individual data point. 
     
     \begin{enumerate}
@@ -35,64 +35,132 @@
     \item Evelyn Fix and Joseph Hodges are credited with the initial ideas around the KNN model in this 1951 paper while Thomas Cover expands on their concept in his article “Nearest Neighbor Pattern Classification.” While it’s not as popular as it once was, it is still one of the first algorithms one learns in data science due to its simplicity and accuracy. However, as a dataset grows, KNN becomes increasingly inefficient, compromising overall model performance. It is commonly used for simple recommendation systems, pattern recognition, data mining, financial market predictions, intrusion detection, and more.      
 \end{enumerate}
     
-    \subsection{KNN Code}
+    \section{KNN Code}
     
     \lstinputlisting[language=Python]{./source/knn/knn.py}
     
-    
-\section{Linear regression}
+
+\chapter{DBScan}
+
+
+\section{Introduction}
+
+DBSCAN stands for Density-Based Spatial Clustering of Applications with Noise. Proposed by Martin Ester, Hans-Peter Kriegel, Jörg Sander, and Xiaowei Xu in 1996, it is a density-based clustering algorithm. DBSCAN assumes that clusters are dense regions separated by areas of lower point density.
+
+
+It groups ‘densely grouped’ data points into a single cluster. It can identify clusters in large spatial datasets by looking at the local density of the data points. The most exciting feature of DBSCAN clustering is that it is robust to outliers. It also does not require the number of clusters to be told beforehand, unlike K-Means, where we have to specify the number of centroids.
+
+DBSCAN requires only two parameters: \verb-epsilon- and \verb-min_points-:
+\begin{enumerate} 
+	\item \verb-epsilon- is the radius of the circle to be created around each data point to check the density;
+	\item \verb-min_points- is the minimum number of data points required inside that circle for that data point to be classified as a Core point.
+\end{enumerate}
+
+In higher dimensions the circle becomes hypersphere, \verb-epsilon- becomes the radius of that hypersphere, and \verb-min_points- is the minimum number of data points required inside that hypersphere.
+
+DBSCAN creates a circle of \verb-epsilon- radius around every data point and classifies them into Core point, Border point, and Noise. A data point is a Core point if the circle around it contains at least ‘\verb-min_points-’ number of points. If the number of points is less than \verb-min_points-, then it is classified as Border Point, and if there are no other data points around any data point within \verb-epsilon- radius, then it treated as Noise.
+
+For locating data points in space, DBSCAN uses Euclidean distance, although other methods can also be used (like great circle distance for geographical data). It also needs to scan through the entire dataset once, whereas in other algorithms we have to do it multiple times.
+
+\subsection{Reachability and Connectivity}
+
+These are the two concepts to understand before moving further. Reachability states if a data point can be accessed from another data point directly or indirectly, whereas Connectivity states whether two data points belong to the same cluster or not. In terms of reachability and connectivity, two points in DBSCAN can be referred to as:
+\begin{enumerate}
+\item Directly Density-Reachable: A point X is directly density-reachable from point Y with respect to \verb-epsilon-, \verb-min_points- if,
+\begin{enumerate}
+\item X belongs to the neighborhood of Y, i.e, dist(X, Y) <= \verb-epsilon-
+\item Y is a Core point
+\end{enumerate}
+\item Density-Reachable: A point X is density-reachable from point Y w.r.t \verb-epsilon-, \verb-min_points- if there is a chain of points $p_{1}, p_{2}, p_{3}, ..., p_{n}$,  $p_{1}=X$ and $p_{n}=Y$ such that $p_{i+1}$ is directly density-reachable from $p_{i}$.
+
+\item Density-Connected: A point X is density-connected from point Y w.r.t \verb-epsilon- and \verb-min_points- if there exists a point O such that both X and Y are density-reachable from O w.r.t to \verb-epsilon- and \verb-min_points-.
+
+\end{enumerate}
+
+Parameter Selection in DBSCAN Clustering
+DBSCAN is very sensitive to the values of \verb-epsilon- and \verb-min_points-. Therefore, it is very important to understand how to select the values of \verb-epsilon- and \verb-min_points-. A slight variation in these values can significantly change the results produced by the DBSCAN algorithm.
+
+The value of \verb-min_points- should be at least one greater than the number of dimensions of the dataset, i.e., 
+
+\verb-min_points->=Dimensions+1.
+
+It does not make sense to take \verb-min_points- as 1 because it will result in each point being a separate cluster. Therefore, it must be at least 3. Generally, it is twice the dimensions. But domain knowledge also decides its value.
+
+The value of \verb-epsilon- can be decided from the K-distance graph. The point of maximum curvature (elbow) in this graph tells us about the value of \verb-epsilon-. If the value of \verb-epsilon- chosen is too small then a higher number of clusters will be created, and more data points will be taken as noise. Whereas, if chosen too big then various small clusters will merge into a big cluster, and we will lose details.
+
+\section{Abstract algorithm}
+The DBSCAN algorithm can be abstracted into the following steps:[4]
+
+\begin{enumerate}
+\item Find the points in the $\verb-epsilon-$ neighborhood of every point, and identify the Core points with more than \verb-min_points- neighbors.
+
+\item Find the connected components of Core points on the neighbor graph, ignoring all non Core points.
+
+\item Assign each non Core point to a nearby cluster if the cluster is an $\verb-epsilon-$ neighbor, otherwise assign it to noise.
+A naive implementation of this requires storing the neighborhoods in step 1, thus requiring substantial memory. The original DBSCAN algorithm does not require this by performing these steps for one point at a time.
+\end{enumerate}
+
+\chapter{Linear regression}
     % https://twitter.com/AssemblyAI/status/1575153653178155010?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=ltXSoduiVwY
     
-    Linear regression
+
+Linear regression is a statistical method used to model the relationship between a dependent variable and one or more independent variables. 
+\begin{enumerate}
+\item It assumes a linear relationship between the variables. 
+\item The goal of linear regression is to find the best-fitting line that minimizes the distance between the predicted values and the actual values. 
+\end{enumerate}
     
-\section{Logistic regression}
+\chapter{Logistic regression}
     % https://twitter.com/AssemblyAI/status/1575153654537064448?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=YYEJ_GUguHw
     
     Logistic regression
     
-\section{Decision trees}
+\chapter{Decision trees}
     % https://twitter.com/AssemblyAI/status/1575153656135315456?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=NxEHSAfFlK8
     
-    Decision trees
+    Decision trees can be used for both regression and classification task. 
+    They are simple to understand, interpret and implement.
     
-\section{Random forest}
+    Trees are directed acyclic graph where any two vertices are connected by one path only.
+    
+\chapter{Random forest}
     % https://twitter.com/AssemblyAI/status/1575153657485692928?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=kFwe2ZZU7yw
     
     Random Forest
     
-\section{Naive Bayes}
+\chapter{Naive Bayes}
     % https://twitter.com/AssemblyAI/status/1575153659075301376?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=TLInuAorxqE
     
     Naive Bayes
     
-\section{PCA}
+\chapter{PCA}
     % https://twitter.com/AssemblyAI/status/1575153660459458560?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=Rjr62b_h7S4
     
     PCA
     
-\section{Perceptron}
+\chapter{Perceptron}
     % https://twitter.com/AssemblyAI/status/1575153663407837184?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=aOEoxyA4uXU
     
     Perceptron
     
-\section{SVM}
+\chapter{SVM}
     % https://twitter.com/AssemblyAI/status/1575153666364911617?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=T9UcK-TxQGw
     
-\section{K means}
+\chapter{K means}
     % https://twitter.com/AssemblyAI/status/1575153669087334400?s=20&t=eUKf_Y-Vl8iCU-bSkXpwTQ
     % https://www.youtube.com/watch?v=6UF5Ysk_2gk
     
     Kmeans
     
-\section{Bibliography}
+\chapter{Bibliography}
     Write
     % \bibliography{article.bib}
     
